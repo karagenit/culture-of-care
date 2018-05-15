@@ -5,7 +5,9 @@ require 'csv'
 data = CSV.parse(IO.read('data.csv'), headers: true)
 
 puts "Headers: "
-puts data.headers
+data.headers.each_with_index do |header, index|
+  puts "#{index}. #{header}"
+end
 puts "-----"
 print "Column to Analyze: "
 colIdx = gets.chomp.to_i
@@ -16,8 +18,10 @@ totals = {}
 data.each do |row|
   row.each do |col, value|
     totals[col] = {} if totals[col].nil?
-    value = 'blank' if value.nil?
-    value.split(' ').each do |value|
+    value ||= '' # prevent nil NoMethod error
+    value.split(/[\s,\/]/).each do |value|
+      value = '[blank]' if value.empty?
+      value = value.strip.downcase
       totals[col][value] = totals[col][value].to_i + 1
     end
   end
