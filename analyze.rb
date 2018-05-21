@@ -4,16 +4,6 @@ require 'csv'
 
 data = CSV.parse(IO.read('data.csv'), headers: true)
 
-# TODO: just print all of them
-puts "Headers: "
-data.headers.each_with_index do |header, index|
-  puts "#{index}. #{header}"
-end
-puts "-----"
-print "Column to Analyze: "
-colIdx = gets.chomp.to_i
-puts "-----"
-
 responses = {} # Word Frequency Maps
 counts = [] # Correlations between # of words responded and values
 
@@ -30,8 +20,14 @@ data.each do |row|
   end
 end
 
-responses[responses.keys[colIdx]].sort_by{ |response, count| -count }.first(20).each do |resp, count|
-  puts "#{resp} (#{count})"
+for i in 0..10 do
+  puts "-----------------"
+  puts "[#{i}] #{data.headers[i]}"
+  puts "-----------------"
+  vals = responses[responses.keys[i]].sort_by{ |response, count| -count }
+  vals.first(10).each do |resp, count|
+    puts "#{resp} (#{count})"
+  end
 end
 
 File.write("counts.csv", counts.map(&:to_csv).join)
