@@ -7,8 +7,12 @@ data = CSV.parse(IO.read('data.csv'), headers: true)
 responses = {} # Word Frequency Maps
 counts = [] # Correlations between # of words responded and values
 
+def wordcount(str)
+  str&.split(/[\s,\/]/)&.length.to_i
+end
+
 data.each do |row|
-  counts.push [row[1]&.split(/[\s,\/]/)&.length.to_i, row[9] || "None"]
+  counts.push [wordcount(row[1]), wordcount(row[7]), row[9] || "None"]
   row.each do |col, value|
     responses[col] = {} if responses[col].nil?
     value ||= '' # prevent nil NoMethod error
