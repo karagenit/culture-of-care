@@ -13,4 +13,6 @@ boxplot(vals,
         ylab='Word count of response to "What stresses you out?"',
         main='Grade Focus vs Stress Level')
 
+t.test(vals$Kind, vals$Grade)
+
 Sys.sleep(1000)
